@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  platform-services:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pyairtable-platform-services
+    ports:
+      - "8007:8007"
+    environment:
+      - DATABASE_URL=sqlite:///./data/platform_services.db
+      - ANALYTICS_DB_PATH=./data/analytics.db
+      - SERVICE_HOST=0.0.0.0
+      - SERVICE_PORT=8007
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - REDIS_URL=redis://redis:6379
+      - LOG_LEVEL=INFO
+      - CORS_ORIGINS=*
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8007/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis:
+    image: redis:7-alpine
+    container_name: pyairtable-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  redis_data:
+
+networks:
+  default:
+    name: pyairtable-network
