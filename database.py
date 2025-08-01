@@ -38,7 +38,7 @@ class User(Base):
     # Profile information
     first_name: Mapped[str] = mapped_column(String(100), nullable=True)
     last_name: Mapped[str] = mapped_column(String(100), nullable=True)
-    metadata: Mapped[Dict[str, Any]] = mapped_column(JSON, default=dict)
+    meta_data: Mapped[Dict[str, Any]] = mapped_column(JSON, default=dict)
 
 # Analytics Models
 class AnalyticsEvent(Base):

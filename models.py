@@ -36,7 +36,7 @@ class MetricRecord(Base):
     type = Column(String(50), nullable=False, index=True)
     value = Column(Float, nullable=False)
     user_id = Column(String(255), nullable=False, index=True)
-    metadata = Column(Text)  # JSON string
+    meta_data = Column(Text)  # JSON string
     timestamp = Column(DateTime, default=datetime.utcnow, index=True)
 
 # === Pydantic Models - Auth ===

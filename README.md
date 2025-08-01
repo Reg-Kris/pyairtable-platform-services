@@ -133,7 +133,7 @@ platform_users:
   - first_name, last_name
   - is_active
   - created_at, updated_at
-  - metadata (JSON)
+  - meta_data (JSON)
 
 -- Analytics Events
 platform_analytics_events:

@@ -25,7 +25,7 @@ class AnalyticsCollector:
                     type TEXT NOT NULL,
                     value REAL NOT NULL,
                     user_id TEXT NOT NULL,
-                    metadata TEXT,
+                    meta_data TEXT,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             """)
@@ -39,7 +39,7 @@ class AnalyticsCollector:
         async with aiosqlite.connect(self.db_path) as db:
             metadata_json = json.dumps(metric.metadata) if metric.metadata else None
             await db.execute(
-                "INSERT INTO metrics (type, value, user_id, metadata, timestamp) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO metrics (type, value, user_id, meta_data, timestamp) VALUES (?, ?, ?, ?, ?)",
                 (metric.type.value, metric.value, metric.user_id, metadata_json, metric.timestamp)
             )
             await db.commit()
@@ -51,7 +51,7 @@ class AnalyticsCollector:
             type=metric.type.value,
             value=metric.value,
             user_id=metric.user_id,
-            metadata=metadata_json,
+            meta_data=metadata_json,
             timestamp=metric.timestamp
         )
         db_session.add(db_metric)

@@ -83,7 +83,7 @@ CREATE TABLE metrics (
     type VARCHAR(50) NOT NULL,           -- api_call, tool_execution, cost, session
     value REAL NOT NULL,                 -- numeric value
     user_id VARCHAR(255) NOT NULL,       -- user identifier
-    metadata TEXT,                       -- JSON metadata
+    meta_data TEXT,                      -- JSON metadata
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
